@@ -84,16 +84,11 @@ def main():
         submit_button = st.form_submit_button("Send")
 
         if submit_button and user_input:
-            # Set a flag to generate the response
-            st.session_state.awaiting_response = True
-            st.session_state.user_input = user_input
+            response = interviewee_response(st.session_state.user_input)
             # Append user message to chat history
             #st.session_state.messages.append({"role": "user", "content": user_input})
 
-     # Generate and display response if flag is set
-    if st.session_state.awaiting_response:
-        response = interviewee_response(st.session_state.user_input)
-        st.session_state.awaiting_response = False  # Reset the flag
+            st.session_state.awaiting_response = False  # Reset the flag
 
             # Generate bot response
             #response = interviewee_response(user_input)
