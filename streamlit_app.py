@@ -19,20 +19,20 @@ The student as interviewer will begin first.
 """
 
 # Initialize the conversation with an introductory message from the interviewee
-initial_message = {
-    "role": "assistant",
-    "content": (
-        "Hi, I'm available to help with your information gathering for the dashboard. "
-        "What would you like to know about our manufacturing process and the challenges we face?"
-    ),
-}
+# initial_message = {
+    #"role": "assistant",
+    #"content": (
+     #   "Hi, I'm available to help with your information gathering for the dashboard. "
+      #  "What would you like to know about our manufacturing process and the challenges we face?"
+    #),
+#}
 
 # Initialize conversation history in Streamlit session state
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": interviewee_context},
         {"role": "assistant", "content": ("Hi, I'm available to help with your information gathering for the dashboard. "
-        "What would you like to know about our manufacturing process and the challenges we face?"}
+        "What would you like to know about our manufacturing process and the challenges we face?")}
     ]
 
 # List of probing phrases that require indirect responses
