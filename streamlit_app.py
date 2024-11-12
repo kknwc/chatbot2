@@ -65,7 +65,7 @@ def interviewee_response(student_input):
 def generate_interviewee_response(student_input):
     st.session_state.messages.append({"role": "user", "content": student_input})
     response =  openai.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=st.session_state.messages,
     )
     assistant_response = response['choices'][0]['message']['content']
