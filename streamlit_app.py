@@ -89,8 +89,8 @@ def main():
             response = interviewee_response(user_input)
             st.session_state.messages.append({"role": "assistant", "content": response})
 
-        # Clear the user input field by refreshing the app
-        #st.experimental_rerun()
+            # Refresh the app to display updated chat
+            st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
