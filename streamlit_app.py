@@ -99,7 +99,7 @@ def main():
         st.session_state.messages.append({"role": "assistant", "content": response})
 
         # Clear the user input field by refreshing the app
-        st.experimental_rerun()
+        #st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
