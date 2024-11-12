@@ -27,6 +27,10 @@ if "messages" not in st.session_state:
     ]
 if "last_user_input" not in st.session_state:
     st.session_state.last_user_input = ""
+if "awaiting_response" not in st.session_state:
+    st.session_state.awaiting_response = False
+if "user_input" not in st.session_state:
+    st.session_state.user_input = ""
 
 # List of probing phrases that require indirect responses
 probing_phrases = [
@@ -78,16 +82,23 @@ def main():
 
     # Input form for user's message
     with st.form(key="user_input_form", clear_on_submit=True):
-        user_input = st.text_input("You:")
+        user_input = st.text_input("You:", key="user_input")
+        submit_button = st.form_submit_button("Send")
    
   # Submit button for sending user input
-        submit_button = st.form_submit_button("Send")
 
         if submit_button and user_input and user_input != st.session_state.last_user_input:
             # Update last input to the current input
             st.session_state.last_user_input = user_input
+            st.session_state.user_input = user_input
+            st.session_state.awaiting_response = True  # Set flag for awaiting response
 
-            response = interviewee_response(user_input)
+    # Generate response if awaiting response
+    if st.session_state.awaiting_response:
+        response = interviewee_response(st.session_state.user_input)
+        st.session_state.awaiting_response = False  # Reset flag
+
+            #response = interviewee_response(user_input)
             # Append user message to chat history
             #st.session_state.messages.append({"role": "user", "content": user_input})
 
