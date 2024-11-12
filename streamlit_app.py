@@ -46,10 +46,10 @@ probing_phrases = [
 
 # Function to check for probing questions
 def check_probing_question(student_input):
-   for phrase in probing_phrases:
-      if phrase.lower() in student_input.lower():
-         return True
-          return False
+    for phrase in probing_phrases:
+        if phrase.lower() in student_input.lower():
+            return True
+    return False
     
 # Function to generate response based on the context
 def interviewee_response(student_input):
