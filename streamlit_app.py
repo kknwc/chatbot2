@@ -31,7 +31,8 @@ initial_message = {
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": interviewee_context},
-        initial_message,
+        {"role": "assistant", "content": ("Hi, I'm available to help with your information gathering for the dashboard. "
+        "What would you like to know about our manufacturing process and the challenges we face?"}
     ]
 
 # List of probing phrases that require indirect responses
