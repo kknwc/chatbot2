@@ -78,17 +78,11 @@ def main():
     st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
     st.write("Ask the interviewee questions about pill manufacturing to gather information.")
 
-    # Initialize chat history and states if not already in session_state
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-    if "conversation_started" not in st.session_state:
-        st.session_state.conversation_started = False  # Track if user initiated conversation
-
-    # Display chat history
+    # Display chat history, skipping the "system" role message
     for message in st.session_state.messages:
         if message["role"] == "user":
             st.write(f"You: {message['content']}")
-        else:
+        elif message["role"] == "assistant":
             st.write(f"Interviewee: {message['content']}")
 
     # Input form for user's message
@@ -99,16 +93,11 @@ def main():
         # Append user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
 
-        # Start conversation with interviewee's initial message if not started yet
-        if not st.session_state.conversation_started:
-            st.session_state.messages.append(initial_message)
-            st.session_state.conversation_started = True
-
         # Generate bot response
         response = interviewee_response(user_input)
         st.session_state.messages.append({"role": "assistant", "content": response})
 
-       # Clear the user input field by refreshing its key with a new one
+        # Clear the user input field by refreshing the app
         st.experimental_rerun()
 
 if __name__ == "__main__":
