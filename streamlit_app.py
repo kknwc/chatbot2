@@ -63,7 +63,7 @@ def interviewee_response(student_input):
 # Function to generate a response using OpenAI API
 def generate_interviewee_response(student_input):
     st.session_state.messages.append({"role": "user", "content": student_input})
-    response = openai.chat_completions.create(
+    response =  client.chat.completions.create(
         model="gpt-4o-mini",
         messages=st.session_state.messages,
     )
