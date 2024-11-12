@@ -87,7 +87,7 @@ def main():
    #         st.write(f"You: {message['content']}")
     #    elif message["role"] == "assistant":
      #       st.write(f"Interviewee: {message['content']}")
-      for message in st.session_state.messages:
+    for message in st.session_state.messages:
         if message["role"] != "system":
             st.write(f"{message['role'].capitalize()}: {message['content']}")
 
