@@ -25,6 +25,8 @@ if "messages" not in st.session_state:
         {"role": "system", "content": interviewee_context},
         {"role": "assistant", "content": "Hi, I'm available to help with your information gathering for the dashboard. "}
     ]
+if "awaiting_response" not in st.session_state:
+    st.session_state.awaiting_response = False
 
 # List of probing phrases that require indirect responses
 probing_phrases = [
@@ -82,15 +84,23 @@ def main():
         submit_button = st.form_submit_button("Send")
 
         if submit_button and user_input:
+            # Set a flag to generate the response
+            st.session_state.awaiting_response = True
+            st.session_state.user_input = user_input
             # Append user message to chat history
             #st.session_state.messages.append({"role": "user", "content": user_input})
 
+     # Generate and display response if flag is set
+    if st.session_state.awaiting_response:
+        response = interviewee_response(st.session_state.user_input)
+        st.session_state.awaiting_response = False  # Reset the flag
+
             # Generate bot response
-            response = interviewee_response(user_input)
+            #response = interviewee_response(user_input)
             #st.session_state.messages.append({"role": "assistant", "content": response})
 
             # Refresh the app to display updated chat
-            st.experimental_rerun()
+            #st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
