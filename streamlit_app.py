@@ -5,7 +5,7 @@ import openai # Make sure you have the OpenAI package installed
 # Define your API key here
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Define the interviewee scenario context, can improve this so that the prompts are more detailed. can change and edit this part for prompt v2
+# Interviewee context for GPT to understand the role and scenario
 interviewee_context = """
 You are now an interviewee for students doing information requirement gathering for dashboarding.
 You know that the manufacturing of pills is unstable, leading to a low yield rate.
@@ -18,7 +18,7 @@ Instead, you can respond with phrases like 'Thank you for reaching out to discus
 The student as interviewer will begin first.
 """
 
-# Initialize the conversation with the interviewee starting
+# Initialize the conversation with an introductory message from the interviewee
 initial_message = {
     "role": "assistant",
     "content": (
@@ -27,39 +27,20 @@ initial_message = {
     ),
 }
 
-# Initialize conversation history
-messages = [
-    {"role": "system", "content": interviewee_context},
-    initial_message,
-]
+# Initialize conversation history in Streamlit session state
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "system", "content": interviewee_context},
+        initial_message,
+    ]
 
-while True:
-    user_input = input("You: ")
-    if user_input.lower() in ["exit", "quit"]:
-        break
-    messages.append({"role": "user", "content": user_input})
-    
-    stream = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages,
-        stream=True,
-    )
-    assistant_response = ''  # Initialize the assistant's response
-    for chunk in stream:
-        content = getattr(chunk.choices[0].delta, 'content', '') or ''
-        # Ensure content is a string and not None
-        print(content, end='', flush=True)
-        assistant_response += content  # Accumulate the content
-    messages.append({"role": "assistant", "content": assistant_response})  # Use the accumulated response
-    print()
-    
-# Define a list of probing phrases
+# List of probing phrases that require indirect responses
 probing_phrases = [
-    "what should I ask", 
-    "what should I do", 
-    "what's next", 
-    "what should be next", 
-    "what is next", 
+    "what should I ask",
+    "what should I do",
+    "what's next",
+    "what should be next",
+    "what is next",
     "what do I do"
 ]
 
@@ -70,20 +51,25 @@ def check_probing_question(student_input):
             return True
     return False
 
-# Chatbot's response logic
+# Function to generate response based on the context
 def interviewee_response(student_input):
     if check_probing_question(student_input):
-        return "Thank you for reaching out to discuss our pill manufacturing process. I'd be happy to provide information to help you understand our current operations and the challenges we face. Please feel free to ask any specific questions you have about the process."
+        return ("Thank you for reaching out to discuss our pill manufacturing process. "
+                "I'd be happy to provide information to help you understand our current operations and the challenges we face. "
+                "Please feel free to ask any specific questions you have about the process.")
     else:
-        # Add logic here for normal responses based on the interviewee_context
         return generate_interviewee_response(student_input)
 
-# Function to generate interviewee's response (you can expand this based on your implementation)
+# Function to generate a response using OpenAI API
 def generate_interviewee_response(student_input):
-    # Use the context to generate a relevant response
-    # e.g., using GPT model or predefined responses
-    return "I am monitoring the manufacturing process closely. Can you ask more specific questions about it?"
-
+    st.session_state.messages.append({"role": "user", "content": student_input})
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
+        messages=st.session_state.messages,
+    )
+    assistant_response = response['choices'][0]['message']['content']
+    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+    return assistant_response
 
 ### Streamlit UI ###
 
