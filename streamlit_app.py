@@ -25,8 +25,8 @@ if "messages" not in st.session_state:
         {"role": "system", "content": interviewee_context},
         {"role": "assistant", "content": "Hi, I'm available to help with your information gathering for the dashboard. "}
     ]
-if "awaiting_response" not in st.session_state:
-    st.session_state.awaiting_response = False
+if "last_user_input" not in st.session_state:
+    st.session_state.last_user_input = ""
 
 # List of probing phrases that require indirect responses
 probing_phrases = [
