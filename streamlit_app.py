@@ -45,12 +45,15 @@ probing_phrases = [
 ]
 
 # Function to check for probing questions
+#def check_probing_question(student_input):
+ #   for phrase in probing_phrases:
+  #      if phrase.lower() in student_input.lower():
+   #         return True
+    #return False
+    
 def check_probing_question(student_input):
-    for phrase in probing_phrases:
-        if phrase.lower() in student_input.lower():
-            return True
-    return False
-
+    return any(phrase.lower() in student_input.lower() for phrase in probing_phrases)
+    
 # Function to generate response based on the context
 def interviewee_response(student_input):
     if check_probing_question(student_input):
@@ -79,11 +82,14 @@ def main():
     st.write("Ask the interviewee questions about pill manufacturing to gather information.")
 
     # Display chat history, skipping the "system" role message
-    for message in st.session_state.messages:
-        if message["role"] == "user":
-            st.write(f"You: {message['content']}")
-        elif message["role"] == "assistant":
-            st.write(f"Interviewee: {message['content']}")
+ #   for message in st.session_state.messages:
+  #      if message["role"] == "user":
+   #         st.write(f"You: {message['content']}")
+    #    elif message["role"] == "assistant":
+     #       st.write(f"Interviewee: {message['content']}")
+      for message in st.session_state.messages:
+        if message["role"] != "system":
+            st.write(f"{message['role'].capitalize()}: {message['content']}")
 
     # Input form for user's message
     user_input = st.text_input("You:", key="user_input")
