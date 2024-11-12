@@ -3,8 +3,8 @@ import os
 import openai # Make sure you have the OpenAI package installed
 
 # Define your API key here
-openai.api_key = os.getenv("OPENAI_API_KEY")
-#client = openai(api_key=os.getenv("OPENAI_API_KEY"))
+#openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY")
 
 # Interviewee context for GPT to understand the role and scenario
 interviewee_context = """
@@ -64,8 +64,8 @@ def interviewee_response(student_input):
 # Function to generate a response using OpenAI API
 def generate_interviewee_response(student_input):
     st.session_state.messages.append({"role": "user", "content": student_input})
-    response =  openai.chat.completions.create(
-        model="gpt-4o",
+    response =  client.chat.completions.create(
+        model="gpt-4o-mini",
         messages=st.session_state.messages,
     )
     assistant_response = response['choices'][0]['message']['content']
