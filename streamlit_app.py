@@ -4,7 +4,7 @@ import openai # Make sure you have the OpenAI package installed
 
 # Define your API key here
 #openai.api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY")
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # Interviewee context for GPT to understand the role and scenario
 interviewee_context = """
