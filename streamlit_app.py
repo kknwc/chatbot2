@@ -45,14 +45,11 @@ probing_phrases = [
 ]
 
 # Function to check for probing questions
-#def check_probing_question(student_input):
- #   for phrase in probing_phrases:
-  #      if phrase.lower() in student_input.lower():
-   #         return True
-    #return False
-    
 def check_probing_question(student_input):
-    return any(phrase.lower() in student_input.lower() for phrase in probing_phrases)
+   for phrase in probing_phrases:
+      if phrase.lower() in student_input.lower():
+         return True
+return False
     
 # Function to generate response based on the context
 def interviewee_response(student_input):
@@ -66,7 +63,7 @@ def interviewee_response(student_input):
 # Function to generate a response using OpenAI API
 def generate_interviewee_response(student_input):
     st.session_state.messages.append({"role": "user", "content": student_input})
-    response = openai.ChatCompletion.create(
+    response = openai.chat_completions.create(
         model="gpt-4o-mini",
         messages=st.session_state.messages,
     )
@@ -82,14 +79,11 @@ def main():
     st.write("Ask the interviewee questions about pill manufacturing to gather information.")
 
     # Display chat history, skipping the "system" role message
- #   for message in st.session_state.messages:
-  #      if message["role"] == "user":
-   #         st.write(f"You: {message['content']}")
-    #    elif message["role"] == "assistant":
-     #       st.write(f"Interviewee: {message['content']}")
     for message in st.session_state.messages:
-        if message["role"] != "system":
-            st.write(f"{message['role'].capitalize()}: {message['content']}")
+        if message["role"] == "user":
+            st.write(f"You: {message['content']}")
+        elif message["role"] == "assistant":
+            st.write(f"Interviewee: {message['content']}")
 
     # Input form for user's message
     user_input = st.text_input("You:", key="user_input")
