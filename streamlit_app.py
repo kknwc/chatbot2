@@ -90,7 +90,7 @@ def main():
             #st.session_state.messages.append({"role": "assistant", "content": response})
 
             # Refresh the app to display updated chat
-            #st.experimental_rerun()
+            st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
