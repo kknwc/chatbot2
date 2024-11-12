@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from openai import OpenAI # Make sure you have the OpenAI package installed
 
 # Define your API key here
