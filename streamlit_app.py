@@ -68,7 +68,7 @@ def generate_interviewee_response(student_input):
         model="gpt-4o-mini",
         messages=st.session_state.messages,
     )
-    assistant_response = response['choices'][0]['message']['content']
+    assistant_response = response.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": assistant_response})
     return assistant_response
 
