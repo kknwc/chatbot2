@@ -3,7 +3,8 @@ import os
 from openai import OpenAI # Make sure you have the OpenAI package installed
 import shelve
 from dotenv import load_dotenv
-from auth import authenticator
+import streamlit_authenticator as stauth
+import json
 
 load_dotenv()
 
@@ -27,6 +28,18 @@ initial_message = {
     "role": "assistant",
     "content": "Hi, I'm available to help with your information gathering for the dashboard. What would you like to know about our manufacturing process and the challenges we face?"
 }
+
+
+# Load credentials from the .json file
+with open('config.json') as f:
+    config = json.load(f)
+
+# Set up the authenticator
+authenticator = stauth.Authenticate(
+    config['credentials']['usernames'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days']
+)
 
 st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
