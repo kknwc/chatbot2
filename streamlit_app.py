@@ -29,8 +29,6 @@ initial_message = {
     "content": "Hi, I'm available to help with your information gathering for the dashboard. What would you like to know about our manufacturing process and the challenges we face?"
 }
 
-
-# Load credentials from the .json file
 with open('config.json') as f:
     config = json.load(f)
 
