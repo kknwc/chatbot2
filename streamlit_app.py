@@ -64,8 +64,29 @@ with st.sidebar:
 
     # New conversation button: resets chat and loads initial message
     if st.button("New Conversation"):
-        st.session_state.messages = [initial_message] # Resets chat
-        save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+        if st.session_state.messages != [initial message]: # Check if current conversation is not the initial message
+            st.session_state.new_convo_warning = True
+        else:
+            st.session_state.messages = [initial_message] # Resets chat
+            save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+
+    # Check if warning message for unsave conversation is triggered
+    if "new_convo_warning" in st.session_state and st.session_state.new_convo_warning:
+        # Pop-up message for unsaved conversation
+        st.warning("Your current conversation has not been saved. Would you like to proceed with a new conversation?")
+        option = st.radio("Choose an action", ("Save Current Conversation", "Proceed Without Saving"))
+
+        if option == "Save Current Conversation":
+            saved_conversations = st.session_state.get("saved_conversations", [])
+            saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
+            st.session_state.saved_conversations = saved_conversations
+            st.session_state.messages = [initial_message] # Reset chat for new conversation
+            st.session_state.new_convo_warning = False
+
+        elif option == "Proceed Without Saving":
+            st.session_state.messages = [initial_message] # Reset chat
+            save_chat_history(st.session_state.messages) # Save empty conversation (or initiate state)
+            st.session_state.new_convo_warning = False
 
 # Display chat messages
 for message in st.session_state.messages:
