@@ -97,7 +97,7 @@ with st.sidebar:
     conversation_titles = [f"Conversation {i + 1}" for i in range(num_conversations)]
     # Display saved conversations as selectable options
     selected_conversation = st.selectbox(
-        "Select a saved conversation to load:",
+        "Select a conversation to load:",
         options=[""] + list(reversed(conversation_titles)),
         index=0
     )
