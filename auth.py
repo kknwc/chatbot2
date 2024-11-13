@@ -5,7 +5,7 @@ from yaml.loader import SafeLoader
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+hashed_passwords = stauth.Hasher(["aldricc2", "kkeidi6", "heng8"]).generate()
 
 config = {
     "credentials": {
@@ -16,21 +16,19 @@ config = {
             },
             "user2": {
                 "name": "kkeidi",
-                "password": stauth.Hasher(["password"]).generate()[0]
+                "password": stauth.Hasher(["password"]).generate()[1]
+            }
+             "user3": {
+                "name": "heng",
+                "password": stauth.Hasher(["password"]).generate()[2]
             }
         }
     },
+    
     "cookie": {
         "name": "my_app_auth",
-        "key": os.getenv("SECRET_KEY", "a_random_secret_key"),
+        "key": "a_random_secret_key",
         "expiry_days": 30
     },
     "preauthorized": ["user1"]
 }
-
-authenticator = stauth.Authenticate(
-    config["credentials"],
-    config["cookie"]["name"],
-    config["cookie"]["key"],
-    config["cookie"]["expiry_days"],
-)
