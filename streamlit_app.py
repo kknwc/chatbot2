@@ -52,20 +52,6 @@ if "messages" not in st.session_state:
 # Ensure saved_conversations is initialised in session state
 if "saved_conversations" not in st.session_state:
     st.session_state.saved_conversations = []
-
-# New conversation button: resets chat and loads initial message
-if st.button("New Conversation"):
-    # Save current conversation automatically before starting new one
-    saved_conversations = st.session_state.get("saved_conversations", [])
-    saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
-    st.session_state.saved_conversations = saved_conversations
-
-    # Display success message
-    st.sidebar.success("Previous conversation has been saved.")
-
-    # Reset conversation to initial message
-    st.session_state.messages = [initial_message] # Resets chat
-    save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
     
 # Sidebar with saved conversations display
 with st.sidebar:
@@ -143,6 +129,20 @@ if prompt := st.chat_input("How can I help?"):
     
 # Save chat history after each interaction
 save_chat_history(st.session_state.messages)
+
+# New conversation button: resets chat and loads initial message
+if st.button("New Conversation"):
+    # Save current conversation automatically before starting new one
+    saved_conversations = st.session_state.get("saved_conversations", [])
+    saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
+    st.session_state.saved_conversations = saved_conversations
+
+    # Display success message
+    st.sidebar.success("Previous conversation has been saved.")
+
+    # Reset conversation to initial message
+    st.session_state.messages = [initial_message] # Resets chat
+    save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
 
 # Display saved conversations in sidebar
 with st.sidebar: 
