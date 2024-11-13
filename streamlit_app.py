@@ -62,7 +62,7 @@ with st.sidebar:
         st.session_state.saved_conversations = saved_conversations
         st.session_state.messages = [initial_message] # Reset chat for new conversation
         save_chat_history(st.session_state.messages)
-        st.sidebar.success(“Conversation saved successfully!")
+        st.sidebar.success("Conversation saved successfully!")
 
     # New conversation button: resets chat and loads initial message
     if st.button("New Conversation"):
