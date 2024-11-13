@@ -84,8 +84,9 @@ with st.sidebar:
     # Display list of saved conversations with latest on top
     st.markdown("### Saved Conversations")
     saved_conversations = st.session_state.get("saved_conversations", [])
-    for idx, conversation in enumerate(saved_conversations):
-        if st.button(f"Conversation {idx + 1}"):
+    for idx, conversation in enumerate(reversed(saved_conversations)):
+        conversation_num = len(saved_conversations) - idx
+        if st.button(f"Conversation {conversation_num}"):
             # Load selected saved conversation
             st.session_state.messages = conversation
             save_chat_history(conversation)
@@ -93,11 +94,11 @@ with st.sidebar:
     # Display dropdown to select conversation to display
     st.markdown("### Select Conversation")
     num_conversations = len(st.session_state.saved_conversations)
-    conversation_titles = [f"Conversation {num_conversations - i}" for i in range(num_conversations)]
+    conversation_titles = [f"Conversation {i + 1}" for i in range(num_conversations)]
     # Display saved conversations as selectable options
     selected_conversation = st.selectbox(
         "Select a saved conversation to load:",
-        options=[""] + conversation_titles,
+        options=[""] + list(reversed(conversation_titles)),
         index=0
     )
 
