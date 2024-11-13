@@ -51,12 +51,12 @@ if "messages" not in st.session_state:
 
 # Sidebar with button to delete chat history
 with st.sidebar:
-    if st.button("Delete Chat History"):
+    if st.button("Delete chat history"):
         st.session_state.messages =[]
         save_chat_history([])
 
     # Manual save current conversation & start a new one
-    if st.button("Save Current Conversation"):
+    if st.button("save current conversation"):
         saved_conversations = st.session_state.get("saved_conversations", [])
         saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
         st.session_state.saved_conversations = saved_conversations
