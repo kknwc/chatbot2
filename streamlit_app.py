@@ -88,7 +88,7 @@ with st.sidebar:
     st.markdown("### Saved Conversations")
 
     # Display saved conversation with latest on top
-    num_conversations = lens(st.session_state.saved_conversations)
+    num_conversations = len(st.session_state.saved_conversations)
     conversation_titles = [f"Conversation {num_conversations - i}" for i in range(num_conversations)]
     
     # Display saved conversations as selectable options
@@ -106,6 +106,9 @@ with st.sidebar:
         # Load the selected conversation into the current messages
         st.session_state.messages = st.session_state.saved_conversations[conversation_index]
         save_chat_history(st.session_state.messages) # Save selected conversation to chat history
+
+        # Refresh app by clearing 'selected_conversation' after loading messages
+        st.session_state["selected_conversation"] = "" # Resetting to acoid re-loading on next render
 
         # Trigger page refresh to load selected conversation
         # st.experimental_rerun()
