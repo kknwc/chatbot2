@@ -34,9 +34,9 @@ with open('config.json') as f:
 
 # Set up the authenticator
 authenticator = stauth.Authenticate(
-    config['credentials']['usernames'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days']
+    config["credentials"]["usernames"],
+    config["cookie"]["key"],
+    config["cookie"]["expiry_days"]
 )
 
 st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
