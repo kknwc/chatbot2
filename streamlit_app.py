@@ -119,9 +119,19 @@ with st.sidebar:
 
     # Delete chat history button at bottom
     if st.button("Delete Chat History"):
+        # Reset chat history to initial message
         st.session_state.messages =[initial_message]
         save_chat_history(st.session_state.messages)
         st.sidebar.success("Chat History has been deleted.")
+
+        # Clear the saved conversations state to ensure its reflected immediately
+        st.session_state.saved_conversations = []
+
+        # Manually clear any session states if necessary to force refresh
+        del st.session_state["selected_conversation"] # Example of clearing other session data if needed
+
+        # Refresh the app by triggering the change
+        st.write("") # This is a workaround for triggering an update
 
 # Display chat messages
 for message in st.session_state.messages:
