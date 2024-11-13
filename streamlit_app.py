@@ -36,8 +36,8 @@ if authentication_status:
     st.sidebar.title(f"Welcome, {name}")
     # authenticator.logout("Logout", "sidebar")
     st.write(f"Logged in as {username}")
-elif authentication_status is False:
-    st.error("Username or password is incorrect")
+# elif authentication_status is False:
+    # st.error("Username or password is incorrect")
 else:
     st.warning("Please login to continue")
 
