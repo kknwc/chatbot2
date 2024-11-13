@@ -64,7 +64,7 @@ with st.sidebar:
 
     # New conversation button: resets chat and loads initial message
     if st.button("New Conversation"):
-        if st.session_state.messages != [initial message]: # Check if current conversation is not the initial message
+        if st.session_state.messages != [initial_message]: # Check if current conversation is not the initial message
             st.session_state.new_convo_warning = True
         else:
             st.session_state.messages = [initial_message] # Resets chat
