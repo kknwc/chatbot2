@@ -62,6 +62,11 @@ with st.sidebar:
         st.session_state.saved_conversations = saved_conversations
         st.session_state.messages = [initial_message] # Reset chat for new conversation
 
+    # New conversation button: resets chat and loads initial message
+    if st.button("New Conversation"):
+        st.session_state.messages = [initial_message] # Resets chat
+        save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+
 # Display chat messages
 for message in st.session_state.messages:
     avatar = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
