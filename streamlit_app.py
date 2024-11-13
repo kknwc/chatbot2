@@ -1,115 +1,66 @@
 import streamlit as st
 import os
 from openai import OpenAI # Make sure you have the OpenAI package installed
+import shelve
+from dotenv import load_dotenv
 
-# Define your API key here
-#openai.api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+load_dotenv()
 
-# Interviewee context for GPT to understand the role and scenario
-interviewee_context = """
-You are now an interviewee for students doing information requirement gathering for dashboarding.
-You know that the manufacturing of pills is unstable, leading to a low yield rate.
-The problem is after manufacturing for a certain amount of time, the pills become bigger than tolerated weight and height.
-You can create details on how to monitor the manufacturing process and identify any challenges or inconsistencies that may arise during the process.
-You do not have any data analytics or dashboarding skills.
-You are secretly assessing students' capability to do information gathering, thus you DO NOT feed answers to students directly.
-If a student asks probing questions like 'what should I ask?', 'what should I do next?', or 'what's next?', you should NOT provide direct guidance. 
-Instead, you can respond with phrases like 'Thank you for reaching out to discuss our pill manufacturing process. I'd be happy to provide information to help you understand our current operations and the challenges we face. Please feel free to ask any specific questions you have about the process.'
-The student as interviewer will begin first.
-"""
+st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
-# Initialize conversation history in Streamlit session state
-if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "system", "content": interviewee_context},
-        {"role": "assistant", "content": "Hi, I'm available to help with your information gathering for the dashboard. "}
-    ]
-if "last_user_input" not in st.session_state:
-    st.session_state.last_user_input = ""
-if "awaiting_response" not in st.session_state:
-    st.session_state.awaiting_response = False
-if "user_input" not in st.session_state:
-    st.session_state.user_input = ""
+USER_AVATAR = "👤"
+BOT_AVATAR = "🤖"
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# List of probing phrases that require indirect responses
-probing_phrases = [
-    "what should I ask",
-    "what should I do",
-    "what's next",
-    "what should be next",
-    "what is next",
-    "what do I do"
-]
+# Ensure openai_model is initialized in session state
+if "openai_model" not in st.session_state:
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
 
-# Function to check for probing questions
-def check_probing_question(student_input):
-    return any(phrase.lower() in student_input.lower() for phrase in probing_phrases)
+# Load chat history from shelve file
+def load_chat_history():
+    with shelve.open("chat_history") as db:
+        return db.get("messages", [])
+
+# Save chat history to shelve file
+def save_chat_history(messages):
+    with shelve.open("chat_history") as db:
+        db["messages"] = messages
+
+# Initialize or load chat history
+if "messages" not in st.sesstion_state:
+    st.session_state.messages = load_chat_history()
+
+# Sidebar with button to delete chat history
+with st.sidebar:
+    if st.button("Delete Chat History"):
+        st.session_state.messages =[]
+        save_chat_history([])
+
+# Display chat messages
+for message in st.session_state.messages:
+    avatar = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
+    with st.chat_message(message["role"], avatar=avatar):
+        st.markdown(message["content"])
+
+# Main chat interface
+if prompt := st.chat_input("How can I help?"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user", avatar=USER_AVATAR):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant", avatar=BOT_AVATAR):
+        message_placeholder = st.empty()
+        full_response = ""
+        for response in client.chat.completions.create(
+            model=st.session_state["openai_model"],
+            messages=st.session_state["messages"],
+            stream=True,
+        ):
+            full_response += response.choices[0].delta.content or ""
+            message_placeholder.markdown(full_response + "|")
+        message_placeholder.markdown(full_response)
+    st.session_state.messages.append({"role": "assistant", "content": full_response})
+
+# Save chat history after each interaction
+save_chat_history(st.session_state.messages)
     
-# Function to generate response based on the context
-def interviewee_response(student_input):
-    if check_probing_question(student_input):
-        return ("Thank you for reaching out to discuss our pill manufacturing process. "
-                "I'd be happy to provide information to help you understand our current operations and the challenges we face. "
-                "Please feel free to ask any specific questions you have about the process.")
-    else:
-        return generate_interviewee_response(student_input)
-
-# Function to generate a response using OpenAI API
-def generate_interviewee_response(student_input):
-    st.session_state.messages.append({"role": "user", "content": student_input})
-    response =  client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=st.session_state.messages,
-    )
-    assistant_response = response.choices[0].message.content
-    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
-    return assistant_response
-
-### Streamlit UI ###
-
-def main():
-    # Set up title and instructions
-    st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
-    st.write("Ask the interviewee questions about pill manufacturing to gather information.")
-
-    # Display chat history, skipping the "system" role message
-    for message in st.session_state.messages:
-        if message["role"] == "user":
-            st.write(f"You: {message['content']}")
-        elif message["role"] == "assistant":
-            st.write(f"Interviewee: {message['content']}")
-
-    # Input form for user's message
-    with st.form(key="user_input_form", clear_on_submit=True):
-        user_input = st.text_input("You:", key="user_input")
-        submit_button = st.form_submit_button("Send")
-   
-  # Submit button for sending user input
-
-        if submit_button and user_input and user_input != st.session_state.last_user_input:
-            # Update last input to the current input
-            st.session_state.last_user_input = user_input
-            st.session_state.user_input = user_input
-            st.session_state.awaiting_response = True  # Set flag for awaiting response
-
-    # Generate response if awaiting response
-    if st.session_state.awaiting_response:
-        response = interviewee_response(st.session_state.user_input)
-        st.session_state.awaiting_response = False  # Reset flag
-
-            #response = interviewee_response(user_input)
-            # Append user message to chat history
-            #st.session_state.messages.append({"role": "user", "content": user_input})
-
-            #st.session_state.awaiting_response = False  # Reset the flag
-
-            # Generate bot response
-            #response = interviewee_response(user_input)
-            #st.session_state.messages.append({"role": "assistant", "content": response})
-
-            # Refresh the app to display updated chat
-            #st.experimental_rerun()
-
-if __name__ == "__main__":
-    main()
