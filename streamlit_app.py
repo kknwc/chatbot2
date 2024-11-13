@@ -49,35 +49,19 @@ if "messages" not in st.session_state:
         # Start with initial message only (do not display context)
         st.session_state.messages = [initial_message]
 
-# Sidebar with button to delete chat history
-with st.sidebar:
-    if st.button("delete chat history"):
-        st.session_state.messages =[initial_message]
-        save_chat_history(st.session_state.messages)
-        st.sidebar.success("chat history has been deleted successfully!")
-
     # New conversation button: resets chat and loads initial message
-    if st.button("new conversation"):
+    if st.button("New Conversation"):
         # Save current conversation automatically before starting new one
         saved_conversations = st.session_state.get("saved_conversations", [])
         saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
         st.session_state.saved_conversations = saved_conversations
 
         # Display success message
-        st.sidebar.success("previous conversation has been saved!")
+        st.sidebar.success("Previous conversation has been saved.")
 
         # Reset conversation to initial message
         st.session_state.messages = [initial_message] # Resets chat
         save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
-
-    # Manual save current conversation & start a new one
-    if st.button("save current conversation"):
-        saved_conversations = st.session_state.get("saved_conversations", [])
-        saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
-        st.session_state.saved_conversations = saved_conversations
-        st.session_state.messages = [initial_message] # Reset chat for new conversation
-        save_chat_history(st.session_state.messages)
-        st.sidebar.success("conversation saved successfully!")
 
 # Ensure saved_conversations is initialised in session state
 if "saved_conversations" not in st.session_state:
@@ -85,7 +69,7 @@ if "saved_conversations" not in st.session_state:
     
 # Sidebar with saved conversations display
 with st.sidebar:
-    st.markdown("### Saved Conversations")
+    st.markdown("### Select Conversation")
 
     # Display saved conversation with latest on top
     num_conversations = len(st.session_state.saved_conversations)
@@ -112,6 +96,15 @@ with st.sidebar:
 
         # Trigger page refresh to load selected conversation
         # st.experimental_rerun()
+
+    # Manual save current conversation & start a new one
+    if st.button("Save Current Conversation"):
+        saved_conversations = st.session_state.get("saved_conversations", [])
+        saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
+        st.session_state.saved_conversations = saved_conversations
+        st.session_state.messages = [initial_message] # Reset chat for new conversation
+        save_chat_history(st.session_state.messages)
+        st.sidebar.success("Conversation has been saved successfully!")
 
 # Display chat messages
 for message in st.session_state.messages:
@@ -161,3 +154,11 @@ with st.sidebar:
                 # Load selected saved conversation
                 st.session_state.messages = conversation
                 save_chat_history(conversation)
+
+# Sidebar with button to delete chat history
+with st.sidebar:
+    if st.button("Delete Chat History"):
+        st.session_state.messages =[initial_message]
+        save_chat_history(st.session_state.messages)
+        st.sidebar.success("Chat History has been deleted.")
+
