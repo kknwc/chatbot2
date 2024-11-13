@@ -134,8 +134,6 @@ with st.sidebar:
         # Force streamlit to refresh UI by updating key state
         st.session_state["chat_reset"] = True # This creates a flag that forces the page to refresh
 
-        st.experimental_rerun()
-
     if st.session_state.get("chat_reset", False):
         st.session_state["chat_reset"] = False
         
