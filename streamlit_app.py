@@ -71,6 +71,9 @@ with st.sidebar:
         saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
         st.session_state.saved_conversations = saved_conversations
 
+        # Display success message
+        st.sidebar.success("previous conversation has been saved!")
+
         # Reset conversation to initial message
         st.session_state.messages = [initial_message] # Resets chat
         save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
