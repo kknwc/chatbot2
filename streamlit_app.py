@@ -32,10 +32,6 @@ st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
 
-# Ensure openai_model is initialized in session state
-# if "openai_model" not in st.session_state:
-    # st.session_state["openai_model"] = "gpt-4o-mini"
-
 # Load chat history from shelve file
 def load_chat_history():
     with shelve.open("chat_history") as db:
@@ -58,6 +54,13 @@ with st.sidebar:
     if st.button("Delete Chat History"):
         st.session_state.messages =[]
         save_chat_history([])
+
+    # Save current conversation & start a new one
+    if st.button("Save Conversation"):
+        saved_conversations = st.session_state.get("saved_conversations", [])
+        saved_conversations.append(list(st.session_state.messages)) # Save current conversation
+        st.session_state.saved_conversations = saved_conversations
+        st.session_state.messages = [initial_message] # Reset chat for new conversation
 
 # Display chat messages
 for message in st.session_state.messages:
@@ -97,3 +100,13 @@ if prompt := st.chat_input("How can I help?"):
 # Save chat history after each interaction
 save_chat_history(st.session_state.messages)
 
+# Display saved conversations in sidebar
+with st.sidebar: 
+    st.subheader("Saved Conversations")
+    saved_conversations = st.session_state.get("saved_conversations", [])
+    if saved_conversations:
+        for idx, conversation in enumerate(saved_conversats):
+            if st.button(f"Conversation {idx + 1}"):
+                # Load selected saved conversation
+                st.session_state.messages = conversation
+                save_chat_history(conversation)
