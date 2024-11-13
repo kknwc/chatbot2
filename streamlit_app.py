@@ -127,8 +127,17 @@ with st.sidebar:
         # Clear the saved conversations state to ensure its reflected immediately
         st.session_state.saved_conversations = []        
 
+        if "selected_conversation" in st.session_state:
+            del st.session_state["selected_conversation"]
+
+        st.session_state["chat_reset"] = True
+        st.experimental_rerun()
+
+    if st.session_state.get("chat_reset", False):
+        st.session_state["chat_reset"] = False
+
         # Refresh the app by triggering the change
-        st.write("") # This is a workaround for triggering an update
+        # st.write("") # This is a workaround for triggering an update
 
 # Display chat messages
 for message in st.session_state.messages:
