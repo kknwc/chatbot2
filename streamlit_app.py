@@ -58,7 +58,7 @@ with st.sidebar:
     # Save current conversation & start a new one
     if st.button("Save Conversation"):
         saved_conversations = st.session_state.get("saved_conversations", [])
-        saved_conversations.append(list(st.session_state.messages)) # Save current conversation
+        saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
         st.session_state.saved_conversations = saved_conversations
         st.session_state.messages = [initial_message] # Reset chat for new conversation
 
