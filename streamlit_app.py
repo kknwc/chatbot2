@@ -27,7 +27,7 @@ def save_chat_history(messages):
         db["messages"] = messages
 
 # Initialize or load chat history
-if "messages" not in st.sesstion_state:
+if "messages" not in st.session_state:
     st.session_state.messages = load_chat_history()
 
 # Sidebar with button to delete chat history
