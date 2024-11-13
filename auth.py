@@ -28,3 +28,6 @@ config = {
     },
     "preauthorized": ["user1"]
 }
+
+# Initialize authenticator with the config
+authenticator = stauth.Authenticate(config["credentials"], config["cookie"], config["preauthorized"])
