@@ -105,7 +105,7 @@ with st.sidebar:
     st.subheader("Saved Conversations")
     saved_conversations = st.session_state.get("saved_conversations", [])
     if saved_conversations:
-        for idx, conversation in enumerate(saved_conversats):
+        for idx, conversation in enumerate(saved_conversations):
             if st.button(f"Conversation {idx + 1}"):
                 # Load selected saved conversation
                 st.session_state.messages = conversation
