@@ -52,15 +52,48 @@ if "messages" not in st.session_state:
 # Ensure saved_conversations is initialised in session state
 if "saved_conversations" not in st.session_state:
     st.session_state.saved_conversations = []
-    
-# Sidebar with saved conversations display
-with st.sidebar:
-    st.markdown("### Select Conversation")
 
-    # Display saved conversation with latest on top
+# Sidebar layout
+with st.sidebar:
+    # New conversation button at top: resets chat and loads initial message
+    if st.button("New Conversation"):
+        # Save current conversation automatically before starting new one
+        saved_conversations = st.session_state.get("saved_conversations", [])
+        saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
+        st.session_state.saved_conversations = saved_conversations
+
+        # Display success message
+        st.sidebar.success("Previous conversation has been saved.")
+
+        # Reset conversation to initial message
+        st.session_state.messages = [initial_message] # Resets chat
+        save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+
+    # Add spacing between buttons
+    st.write("---")
+
+    # Manual save current conversation & start a new one
+    if st.button("Save Current Conversation"):
+        saved_conversations = st.session_state.get("saved_conversations", [])
+        saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
+        st.session_state.saved_conversations = saved_conversations
+        st.session_state.messages = [initial_message] # Reset chat for new conversation
+        save_chat_history(st.session_state.messages)
+        st.sidebar.success("Conversation has been saved successfully!")
+
+    # Display list of saved conversations with latest on top
+    st.markdown("### Saved Conversations")
+    saved_conversations = st.session_state.get("saved_conversations", [])
+    for idx, conversation in enumerate(saved_conversations):
+        if st.button(f"Conversation {idx + 1}"):
+            # Load selected saved conversation
+            st.session_state.messages = conversation
+            save_chat_history(conversation)
+
+    # Display dropdown to select conversation to display
+    st.markdown("### Select Conversation")
     num_conversations = len(st.session_state.saved_conversations)
     conversation_titles = [f"Conversation {num_conversations - i}" for i in range(num_conversations)]
-    
     # Display saved conversations as selectable options
     selected_conversation = st.selectbox(
         "Select a saved conversation to load:",
@@ -68,7 +101,7 @@ with st.sidebar:
         index=0
     )
 
-    # Check if conversation is selected
+    # Check if conversation is selected from dropdown
     if selected_conversation and selected_conversation != "":
         # Find the index of the selected conversation
         conversation_index = num_conversations - int(selected_conversation.split(" ")[-1])
@@ -80,17 +113,14 @@ with st.sidebar:
         # Refresh app by clearing 'selected_conversation' after loading messages
         st.session_state["selected_conversation"] = "" # Resetting to acoid re-loading on next render
 
-        # Trigger page refresh to load selected conversation
-        # st.experimental_rerun()
+    # Add spacing before delete button
+    st.write("---")
 
-    # Manual save current conversation & start a new one
-    if st.button("Save Current Conversation"):
-        saved_conversations = st.session_state.get("saved_conversations", [])
-        saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
-        st.session_state.saved_conversations = saved_conversations
-        st.session_state.messages = [initial_message] # Reset chat for new conversation
+    # Delete chat history button at bottom
+    if st.button("Delete Chat History"):
+        st.session_state.messages =[initial_message]
         save_chat_history(st.session_state.messages)
-        st.sidebar.success("Conversation has been saved successfully!")
+        st.sidebar.success("Chat History has been deleted.")
 
 # Display chat messages
 for message in st.session_state.messages:
@@ -129,36 +159,3 @@ if prompt := st.chat_input("How can I help?"):
     
 # Save chat history after each interaction
 save_chat_history(st.session_state.messages)
-
-# New conversation button: resets chat and loads initial message
-if st.button("New Conversation"):
-    # Save current conversation automatically before starting new one
-    saved_conversations = st.session_state.get("saved_conversations", [])
-    saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
-    st.session_state.saved_conversations = saved_conversations
-
-    # Display success message
-    st.sidebar.success("Previous conversation has been saved.")
-
-    # Reset conversation to initial message
-    st.session_state.messages = [initial_message] # Resets chat
-    save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
-
-# Display saved conversations in sidebar
-with st.sidebar: 
-    st.subheader("Saved Conversations")
-    saved_conversations = st.session_state.get("saved_conversations", [])
-    if saved_conversations:
-        for idx, conversation in enumerate(saved_conversations):
-            if st.button(f"Conversation {idx + 1}"):
-                # Load selected saved conversation
-                st.session_state.messages = conversation
-                save_chat_history(conversation)
-
-# Sidebar with button to delete chat history
-with st.sidebar:
-    if st.button("Delete Chat History"):
-        st.session_state.messages =[initial_message]
-        save_chat_history(st.session_state.messages)
-        st.sidebar.success("Chat History has been deleted.")
-
