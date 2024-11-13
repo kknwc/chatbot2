@@ -74,7 +74,9 @@ with st.sidebar:
     if "new_convo_warning" in st.session_state and st.session_state.new_convo_warning:
         # Pop-up message for unsaved conversation
         st.warning("Your current conversation has not been saved. Would you like to proceed with a new conversation?")
-        option = st.radio("Choose an action", ("Save Current Conversation", "Proceed Without Saving"))
+
+        # Add radio buttons to choose action
+        option = st.radio("Choose an action", ["Save Current Conversation", "Proceed Without Saving"], key="action_choice")
 
         if option == "Save Current Conversation":
             saved_conversations = st.session_state.get("saved_conversations", [])
