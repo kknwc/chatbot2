@@ -1,8 +1,5 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-import yaml
-from yaml.loader import SafeLoader
-from dotenv import load_dotenv
 import os
 
 hashed_passwords = stauth.Hasher(["aldricc2", "kkeidi6", "heng8"]).generate()
