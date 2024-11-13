@@ -30,16 +30,16 @@ initial_message = {
 
 st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
-name, authentication_status, username = authentication.login("Login", "main")
+name, authentication_status, username = authenticator.login("Login", "main")
 
 if authentication_status:
     st.sidebar.title(f"Welcome, {name}")
-    authenticator.logout("Logout", "sidebar")
-    st.write("This is a secure section of the app.")
+    # authenticator.logout("Logout", "sidebar")
+    st.write(f"Logged in as {username}")
 elif authentication_status is False:
     st.error("Username or password is incorrect")
 else:
-    st.info("Please login to continue")
+    st.warning("Please login to continue")
 
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
