@@ -32,10 +32,6 @@ st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
 
-# Ensure openai_model is initialized in session state
-# if "openai_model" not in st.session_state:
-    # st.session_state["openai_model"] = "gpt-4o-mini"
-
 # Load chat history from shelve file
 def load_chat_history():
     with shelve.open("chat_history") as db:
