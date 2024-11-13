@@ -130,11 +130,10 @@ with st.sidebar:
         if "selected_conversation" in st.session_state:
             del st.session_state["selected_conversation"]
 
-        st.session_state["chat_reset"] = True
-        st.experimental_rerun()
+        st.session_state["messages_reset"] = True
 
-    if st.session_state.get("chat_reset", False):
-        st.session_state["chat_reset"] = False
+    if st.session_state.get("messages_reset", False):
+        st.session_state["messages_reset"] = False
 
         # Refresh the app by triggering the change
         # st.write("") # This is a workaround for triggering an update
