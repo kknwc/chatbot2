@@ -79,6 +79,10 @@ with st.sidebar:
         st.session_state.messages = [initial_message] # Resets chat
         save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
 
+# Ensure saved_conversations is initialised in session state
+if "saved_conversations" not in st.session_state:
+    st.session_state.saved_conversations = []
+    
 # Sidebar with saved conversations display
 with st.sidebar:
     # Display saved conversations as selectable options
