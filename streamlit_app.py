@@ -28,10 +28,10 @@ initial_message = {
 }
 
 # Initialize conversation history
-#messages = [
-    #{"role": "system", "content": interviewee_context},
-    #initial_message
-#]
+# messages = [
+    # {"role": "system", "content": interviewee_context},
+    # initial_message
+# ]
 
 # Define probing phrases to detect questions that shouldn't receive direct answers
 probing_phrases = [
@@ -60,8 +60,8 @@ USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
 
 # Ensure openai_model is initialized in session state
-if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-4o-mini"
+# if "openai_model" not in st.session_state:
+    # st.session_state["openai_model"] = "gpt-4o-mini"
 
 # Load chat history from shelve file
 def load_chat_history():
@@ -107,7 +107,8 @@ if prompt := st.chat_input("How can I help?"):
         full_response = ""
         
         for response in client.chat.completions.create(
-            model=st.session_state["openai_model"],
+            # model=st.session_state["openai_model"],
+            model = "gpt-4o-mini",
             messages=api_messages,
             stream=True,
         ):
