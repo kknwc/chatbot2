@@ -125,18 +125,7 @@ with st.sidebar:
         st.sidebar.success("Chat History has been deleted.")
 
         # Clear the saved conversations state to ensure its reflected immediately
-        st.session_state.saved_conversations = []
-
-        # Manually clear any session states if necessary to force refresh
-        if "selected_conversation" in st.session_state:
-            del st.session_state["selected_conversation"] # Example of clearing other session data if needed
-
-        # Force streamlit to refresh UI by updating key state
-        st.session_state["chat_reset"] = True # This creates a flag that forces the page to refresh
-
-    if st.session_state.get("chat_reset", False):
-        st.session_state["chat_reset"] = False
-        
+        st.session_state.saved_conversations = []        
 
         # Refresh the app by triggering the change
         st.write("") # This is a workaround for triggering an update
