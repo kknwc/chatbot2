@@ -90,6 +90,7 @@ with st.sidebar:
             st.session_state.messages = [initial_message] # Reset chat
             save_chat_history(st.session_state.messages) # Save empty conversation (or initiate state)
             st.session_state.new_convo_warning = False # Clears the warning
+            st.experimental_rerun()  # Refresh to start a new conversation without saving
 
 # Display chat messages
 for message in st.session_state.messages:
