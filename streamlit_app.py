@@ -85,18 +85,23 @@ if "saved_conversations" not in st.session_state:
     
 # Sidebar with saved conversations display
 with st.sidebar:
-    # Display saved conversations as selectable options
     st.markdown("### Saved Conversations")
+
+    # Display saved conversation with latest on top
+    num_conversations = lens(st.session_state.saved_conversations)
+    conversation_titles = [f"Conversation {num_conversations - i}" for i in range(num_conversations)]
+    
+    # Display saved conversations as selectable options
     selected_conversation = st.selectbox(
         "Select a saved conversation to load:",
-        options=[""] + [f"Conversation {i+1}" for i in range(len(st.session_state.saved_conversations))],
+        options=[""] + conversation_titles,
         index=0
     )
 
     # Check if conversation is selected
     if selected_conversation and selected_conversation != "":
         # Find the index of the selected conversation
-        conversation_index = int(selected_conversation.split(" ")[-1]) - 1
+        conversation_index = num_conversations - int(selected_conversation.split(" ")[-1])
 
         # Load the selected conversation into the current messages
         st.session_state.messages = st.session_state.saved_conversations[conversation_index]
