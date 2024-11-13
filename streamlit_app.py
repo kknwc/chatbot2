@@ -3,8 +3,6 @@ import os
 from openai import OpenAI # Make sure you have the OpenAI package installed
 import shelve
 from dotenv import load_dotenv
-import streamlit_authenticator as stauth
-import json
 
 load_dotenv()
 
@@ -29,31 +27,14 @@ initial_message = {
     "content": "Hi, I'm available to help with your information gathering for the dashboard. What would you like to know about our manufacturing process and the challenges we face?"
 }
 
-with open('config.json') as f:
-    config = json.load(f)
-
-# Set up the authenticator
-authenticator = stauth.Authenticate(
-    config["credentials"]["usernames"],
-    config["cookie"]["key"],
-    config["cookie"]["expiry_days"]
-)
-
 st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
-
-name, authentication_status, usernames = authenticator.login("Login", "main")
-
-if authentication_status:
-    st.sidebar.title(f"Welcome, {name}")
-    # authenticator.logout("Logout", "sidebar")
-    st.write(f"Logged in as {usernames}")
-# elif authentication_status is False:
-    # st.error("Username or password is incorrect")
-else:
-    st.warning("Please login to continue")
 
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
+
+# Ensure openai_model is initialized in session state
+# if "openai_model" not in st.session_state:
+    # st.session_state["openai_model"] = "gpt-4o-mini"
 
 # Load chat history from shelve file
 def load_chat_history():
@@ -115,3 +96,4 @@ if prompt := st.chat_input("How can I help?"):
     
 # Save chat history after each interaction
 save_chat_history(st.session_state.messages)
+
