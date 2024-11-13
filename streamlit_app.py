@@ -28,9 +28,10 @@ initial_message = {
 }
 
 # Initialize conversation history
-messages = [
-    {"role": "system", "content": initial_message}
-]
+#messages = [
+    #{"role": "system", "content": interviewee_context},
+    #initial_message
+#]
 
 # Define probing phrases to detect questions that shouldn't receive direct answers
 probing_phrases = [
@@ -76,10 +77,8 @@ def save_chat_history(messages):
 if "messages" not in st.session_state:
     st.session_state.messages = load_chat_history()
     if not st.session_state.messages:
-        # Add initial interviewee context and message to the history
-        st.session_state.messages = [
-            {"role": "system", "content": initial_message}
-        ]
+        # Start with initial message only (do not display context)
+        st.session_state.messages = [initial_message]
 
 # Sidebar with button to delete chat history
 with st.sidebar:
@@ -99,6 +98,9 @@ if prompt := st.chat_input("How can I help?"):
     with st.chat_message("user", avatar=USER_AVATAR):
         st.markdown(prompt)
 
+    # Prepare messages for the OpenAI API call
+    api_messages = [{"role": "system", "content": interviewee_context}] + st.session_state.messages
+
     # Generate response using the custom chatbot function
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         message_placeholder = st.empty()
@@ -106,7 +108,7 @@ if prompt := st.chat_input("How can I help?"):
         
         for response in client.chat.completions.create(
             model=st.session_state["openai_model"],
-            messages=st.session_state["messages"],
+            messages=api_messages,
             stream=True,
         ):
             content = response.choices[0].delta.get("content", "")
