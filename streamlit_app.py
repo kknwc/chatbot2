@@ -3,6 +3,7 @@ import os
 from openai import OpenAI # Make sure you have the OpenAI package installed
 import shelve
 from dotenv import load_dotenv
+from auth import authenticator
 
 load_dotenv()
 
@@ -28,6 +29,17 @@ initial_message = {
 }
 
 st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
+
+name, authentication_status, username = authentication.login("Login", "main")
+
+if authentication_status:
+    st.sidebar.title(f"Welcome, {name}")
+    authenticator.logout("Logout", "sidebar")
+    st.write("This is a secure section of the app.")
+elif authentication_status is False:
+    st.error("Username or password is incorrect")
+else:
+    st.info("Please login to continue")
 
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
