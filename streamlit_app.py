@@ -72,6 +72,28 @@ with st.sidebar:
         saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
         st.session_state.saved_conversations = saved_conversations
 
+# Sidebar with saved conversations display
+with st.sidebar:
+    # Display saved conversations as selectable options
+    st.markdown("### Saved Conversations")
+    selected_conversation = st.selectbox(
+        "Select a saved conversation to load:",
+        options=[""] + [f"Conversation {i+1}" for i in range(len(st.session_state.saved_conversations))],
+        index=0
+    )
+
+    # Check if conversation is selected
+    if selected_conversation and selected_conversation != "":
+        # Find the index of the selected conversation
+        conversation_index = int(selected_conversation.split(" ")[-1]) - 1
+
+        # Load the selected conversation into the current messages
+        st.session_state.messages = st.session_state.saved_conversations[conversation_index]
+        save_chat_history(st.session_state.messages) # Save selected conversation to chat history
+
+        # Trigger page refresh to load selected conversation
+        st.experimental_rerun()
+        
         # Display success message
         st.sidebar.success("previous conversation has been saved!")
 
