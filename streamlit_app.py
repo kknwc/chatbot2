@@ -27,33 +27,6 @@ initial_message = {
     "content": "Hi, I'm available to help with your information gathering for the dashboard. What would you like to know about our manufacturing process and the challenges we face?"
 }
 
-# Initialize conversation history
-# messages = [
-    # {"role": "system", "content": interviewee_context},
-    # initial_message
-# ]
-
-# Define probing phrases to detect questions that shouldn't receive direct answers
-probing_phrases = [
-    "what should I ask", "what should I do", "what's next", "what should be next", "what is next", "what do I do"
-]
-
-# Function to check for probing questions
-def check_probing_question(student_input):
-    for phrase in probing_phrases:
-        if phrase.lower() in student_input.lower():
-            return True
-    return False
-
-# Function to generate response for probing questions
-def interviewee_response(student_input):
-    if check_probing_question(student_input):
-        return "Thank you for reaching out to discuss our pill manufacturing process. I'd be happy to provide information to help you understand our current operations and the challenges we face. Please feel free to ask any specific questions you have about the process."
-    else:
-        # Placeholder for a more detailed response logic
-        return "I am monitoring the manufacturing process closely. Can you ask more specific questions about it?"
-
-
 st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
 USER_AVATAR = "👤"
@@ -107,7 +80,6 @@ if prompt := st.chat_input("How can I help?"):
         full_response = ""
         
         for response in client.chat.completions.create(
-            # model=st.session_state["openai_model"],
             model = "gpt-4o-mini",
             messages=api_messages,
             stream=True,
