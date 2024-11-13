@@ -84,7 +84,7 @@ if prompt := st.chat_input("How can I help?"):
             messages=api_messages,
             stream=True,
         ):
-            content = response.choices[0].delta.get("content", "")
+            content = response.choices[0].delta.content or ""
             full_response += content
             message_placeholder.markdown(full_response + "|")
 
