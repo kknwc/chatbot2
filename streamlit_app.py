@@ -55,42 +55,25 @@ with st.sidebar:
         st.session_state.messages =[]
         save_chat_history([])
 
-    # Save current conversation & start a new one
-    if st.button("Save Conversation"):
+    # Manual save current conversation & start a new one
+    if st.button("Save Current Conversation"):
         saved_conversations = st.session_state.get("saved_conversations", [])
         saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
         st.session_state.saved_conversations = saved_conversations
         st.session_state.messages = [initial_message] # Reset chat for new conversation
+        save_chat_history(st.session_state.messages)
+        st.sidebar.success(“Conversation saved successfully!")
 
     # New conversation button: resets chat and loads initial message
     if st.button("New Conversation"):
-        if st.session_state.messages != [initial_message]: # Check if current conversation is not the initial message
-            st.session_state.new_convo_warning = True
-        else:
-            st.session_state.messages = [initial_message] # Resets chat
-            save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+        # Save current conversation automatically before starting new one
+        saved_conversations = st.session_state.get("saved_conversations", [])
+        saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
+        st.session_state.saved_conversations = saved_conversations
 
-    # Check if warning message for unsave conversation is triggered
-    if "new_convo_warning" in st.session_state and st.session_state.new_convo_warning:
-        # Pop-up message for unsaved conversation
-        st.warning("Your current conversation has not been saved. Would you like to proceed with a new conversation?")
-
-        # Add radio buttons to choose action
-        option = st.radio("Choose an action", ["Save Current Conversation", "Proceed Without Saving"], key="action_choice")
-
-        if option == "Save Current Conversation":
-            saved_conversations = st.session_state.get("saved_conversations", [])
-            saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
-            st.session_state.saved_conversations = saved_conversations
-            st.session_state.messages = [initial_message] # Reset chat for new conversation
-            st.session_state.new_convo_warning = False
-
-        elif option == "Proceed Without Saving":
-            # Do not save conversations if user chooses to proceed without saving
-            st.session_state.messages = [initial_message] # Reset chat
-            save_chat_history(st.session_state.messages) # Save empty conversation (or initiate state)
-            st.session_state.new_convo_warning = False # Clears the warning
-            st.experimental_rerun()  # Refresh to start a new conversation without saving
+        # Reset conversation to initial message
+        st.session_state.messages = [initial_message] # Resets chat
+        save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
 
 # Display chat messages
 for message in st.session_state.messages:
