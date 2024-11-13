@@ -103,7 +103,7 @@ with st.sidebar:
         save_chat_history(st.session_state.messages) # Save selected conversation to chat history
 
         # Trigger page refresh to load selected conversation
-        st.experimental_rerun()
+        # st.experimental_rerun()
 
 # Display chat messages
 for message in st.session_state.messages:
