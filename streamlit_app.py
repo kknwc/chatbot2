@@ -76,7 +76,7 @@ def save_chat_history(messages):
 # Initialize or load chat history
 if "messages" not in st.session_state:
     st.session_state.messages = load_chat_history()
-     if not st.session_state.messages:
+    if not st.session_state.messages:
         # Add initial interviewee context and message to the history
         st.session_state.messages = [
             {"role": "system", "content": interviewee_context},
