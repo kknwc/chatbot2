@@ -29,8 +29,7 @@ initial_message = {
 
 # Initialize conversation history
 messages = [
-    {"role": "system", "content": interviewee_context},
-    initial_message,
+    {"role": "system", "content": initial_message}
 ]
 
 # Define probing phrases to detect questions that shouldn't receive direct answers
@@ -79,8 +78,7 @@ if "messages" not in st.session_state:
     if not st.session_state.messages:
         # Add initial interviewee context and message to the history
         st.session_state.messages = [
-            {"role": "system", "content": interviewee_context},
-            initial_message,
+            {"role": "system", "content": initial_message}
         ]
 
 # Sidebar with button to delete chat history
