@@ -128,7 +128,16 @@ with st.sidebar:
         st.session_state.saved_conversations = []
 
         # Manually clear any session states if necessary to force refresh
-        del st.session_state["selected_conversation"] # Example of clearing other session data if needed
+        del st.session_state.get("selected_conversation", None) # Example of clearing other session data if needed
+
+        # Force streamlit to refresh UI by updating key state
+        st.session_state["chat_reset"] = True # This creates a flag that forces the page to refresh
+
+        st.experimental_rerun()
+
+    if st.session_state.get("chat_reset", False):
+        st.session_state["chat_reset"] = False
+        
 
         # Refresh the app by triggering the change
         st.write("") # This is a workaround for triggering an update
