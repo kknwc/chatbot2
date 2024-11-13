@@ -86,9 +86,10 @@ with st.sidebar:
             st.session_state.new_convo_warning = False
 
         elif option == "Proceed Without Saving":
+            # Do not save conversations if user chooses to proceed without saving
             st.session_state.messages = [initial_message] # Reset chat
             save_chat_history(st.session_state.messages) # Save empty conversation (or initiate state)
-            st.session_state.new_convo_warning = False
+            st.session_state.new_convo_warning = False # Clears the warning
 
 # Display chat messages
 for message in st.session_state.messages:
