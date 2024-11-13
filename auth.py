@@ -14,7 +14,7 @@ config = {
             "user2": {
                 "name": "kkeidi",
                 "password": stauth.Hasher(["password"]).generate()[1]
-            }
+            },
              "user3": {
                 "name": "heng",
                 "password": stauth.Hasher(["password"]).generate()[2]
