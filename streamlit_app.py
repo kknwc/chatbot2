@@ -41,12 +41,12 @@ authenticator = stauth.Authenticate(
 
 st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
-name, authentication_status, username = authenticator.login("Login", "main")
+name, authentication_status, usernames = authenticator.login("Login", "main")
 
 if authentication_status:
     st.sidebar.title(f"Welcome, {name}")
     # authenticator.logout("Logout", "sidebar")
-    st.write(f"Logged in as {username}")
+    st.write(f"Logged in as {usernames}")
 # elif authentication_status is False:
     # st.error("Username or password is incorrect")
 else:
