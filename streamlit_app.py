@@ -56,15 +56,6 @@ with st.sidebar:
         save_chat_history(st.session_state.messages)
         st.sidebar.success("chat history has been deleted successfully!")
 
-    # Manual save current conversation & start a new one
-    if st.button("save current conversation"):
-        saved_conversations = st.session_state.get("saved_conversations", [])
-        saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
-        st.session_state.saved_conversations = saved_conversations
-        st.session_state.messages = [initial_message] # Reset chat for new conversation
-        save_chat_history(st.session_state.messages)
-        st.sidebar.success("conversation saved successfully!")
-
     # New conversation button: resets chat and loads initial message
     if st.button("new conversation"):
         # Save current conversation automatically before starting new one
@@ -78,6 +69,15 @@ with st.sidebar:
         # Reset conversation to initial message
         st.session_state.messages = [initial_message] # Resets chat
         save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+
+    # Manual save current conversation & start a new one
+    if st.button("save current conversation"):
+        saved_conversations = st.session_state.get("saved_conversations", [])
+        saved_conversations.insert(0, list(st.session_state.messages)) # Save current conversation
+        st.session_state.saved_conversations = saved_conversations
+        st.session_state.messages = [initial_message] # Reset chat for new conversation
+        save_chat_history(st.session_state.messages)
+        st.sidebar.success("conversation saved successfully!")
 
 # Ensure saved_conversations is initialised in session state
 if "saved_conversations" not in st.session_state:
