@@ -108,10 +108,11 @@ with st.sidebar:
     saved_conversations = st.session_state.get("saved_conversations", [])
     for idx, conversation in enumerate(reversed(saved_conversations)):
         conversation_num = len(saved_conversations) - idx
-        if st.button(f"Conversation {conversation_num}"):
+        st.markdown(f"Conversation {conversation_num}")
+        # if st.button(f"Conversation {conversation_num}"):
             # Load selected saved conversation
-            st.session_state.messages = conversation
-            save_chat_history(conversation)
+            # st.session_state.messages = conversation
+            # save_chat_history(conversation)
 
     # Display dropdown to select conversation to display
     st.markdown("### Select Conversation")
