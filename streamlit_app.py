@@ -31,7 +31,7 @@ st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
-# FEEDBACK_AVATAR = "📝"    
+FEEDBACK_AVATAR = "📝"    
     
 # Load chat history from shelve file
 def load_chat_history():
