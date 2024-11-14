@@ -31,16 +31,7 @@ st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
-FEEDBACK_AVATAR = "📝"
-
-# Feedback function
-def provide_feedback(question):
-    feedback_prompt = f"Evaluate the question: '{question}'. Provide a constructive feedback on phrasing and suggest improvements for clarity and relevance."
-    feedback_response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "system", "content": feedback_prompt}]
-    )
-    return feedback_response.choices[0].message.content     
+# FEEDBACK_AVATAR = "📝"    
     
 # Load chat history from shelve file
 def load_chat_history():
@@ -154,7 +145,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
 
-# Main chat interface with feedback integration
+# Main chat interface 
 if prompt := st.chat_input("How can I help?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar=USER_AVATAR):
@@ -184,10 +175,28 @@ if prompt := st.chat_input("How can I help?"):
     st.session_state.messages.append({"role": "assistant", "content": full_response})
 
     # Generate feedback and display it
-    feedback = provide_feedback(prompt)
-    st.session_state.messages.append({"role": "feedback", "content": feedback})
-    with st.chat_message("feedback", avatar=FEEDBACK_AVATAR):
-        st.markdown(feedback)
+    # feedback = provide_feedback(prompt)
+    # st.session_state.messages.append({"role": "feedback", "content": feedback})
+    # with st.chat_message("feedback", avatar=FEEDBACK_AVATAR):
+        # st.markdown(feedback)
         
 # Save chat history after each interaction
 save_chat_history(st.session_state.messages)
+
+# End conversation button on main page
+st.write("--")
+if st.button("End Conversation and Get Feedback"):
+    # Gather all user questions in conversation
+    user_questions = " ".join(msg["content"] for msg in st.session_state.messages if msg["role"] == "user")
+
+    # Generate feedback for entire conversation
+    feedback_prompt = f"Evaluate the following series of questions: '{user_questions}'. Provide feedback on the overall phrasing, clarity, relevance, and suggest improvements for effective information gathering."
+    feedback_response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "system", "content": feedback_prompt}]
+    )
+    feedback = feedback_response.choices[0].message.content
+
+    # Display feedback on main page
+    st.markdown("### Feedback on conversation")
+    st.write(feedback)
