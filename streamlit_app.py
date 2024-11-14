@@ -202,5 +202,5 @@ if st.button("End Conversation and Get Feedback"):
 
     # Display feedback on main page
     st.markdown("### Feedback on conversation")
-    with st.chat_message("assistant", avatar=FEEDBACK_AVATAR):
+    with st.chat_message("feedback", avatar=FEEDBACK_AVATAR):
         st.markdown(st.session_state.feedback) # Display feedback with avatar
