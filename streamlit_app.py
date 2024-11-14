@@ -75,7 +75,7 @@ with st.sidebar:
         saved_conversations = st.session_state.get("saved_conversations", [])
 
         # Check if current conversation has already been saved
-        if current_conversation in saved_conversations:
+        if current_conversation not in saved_conversations:
             saved_conversations.insert(0, list(current_conversation)) # Insert at beginning to maintain order
             st.sidebar.success("Previous conversation has been saved.")
             # st.session_state.messages = [initial_message] # Resets chat
