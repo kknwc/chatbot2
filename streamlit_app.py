@@ -71,18 +71,21 @@ with st.sidebar:
     # New conversation button at top: resets chat and loads initial message
     if st.button("New Conversation"):
         # Save current conversation automatically before starting new one
-        current_conversation = st.session_state.messages
+        # current_conversation = st.session_state.messages
         saved_conversations = st.session_state.get("saved_conversations", [])
-        # saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
-        # st.session_state.saved_conversations = saved_conversations
+
+        # Check if current conversation has already been saved
+        if st.session_state.messages not in saved_conversations:
+            saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
+            st.sidebar.success("Previous conversation has been saved.")
+        else:
+            st.sidebar.info("No new updates; conversation saved and remains unchanged.")
 
         # Update saved conversations list without duplicating identical conversations
         st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
 
-        # Display success message
-        st.sidebar.success("Previous conversation has been saved.")
-
         # Reset conversation to initial message
+        st.session_state.saved_conversations = saved_conversations
         st.session_state.messages = [initial_message] # Resets chat
         save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
 
@@ -109,7 +112,6 @@ with st.sidebar:
             # Load selected saved conversation
             st.session_state.messages = conversation
             save_chat_history(conversation)
-            st.sidebar.success(f"Loaded Conversation{conversation_num}")
 
     # Display dropdown to select conversation to display
     st.markdown("### Select Conversation")
@@ -133,6 +135,8 @@ with st.sidebar:
 
         # Refresh app by clearing 'selected_conversation' after loading messages
         st.session_state["selected_conversation"] = "" # Resetting to acoid re-loading on next render
+
+        st.sidebar.success(f"Loaded Conversation{conversation_num}")
 
     # Add spacing before delete button
     st.write("---")
