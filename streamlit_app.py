@@ -31,7 +31,17 @@ st.title("Interview Chatbot for Pill Manufacturing Information Gathering")
 
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
+FEEDBACK_AVATAR = "📝"
 
+# Feedback function
+def provide_feedback(question):
+    feedback_prompt = f"Evaluate the question: '{question}'. Provide a constructive feedback on phrasing and suggest improvements for clarity and relevance."
+    feedback_response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role":, "system", "content": feedback_prompt}]
+    )
+    return feedback_response.choices[0].message['content']
+    
 # Load chat history from shelve file
 def load_chat_history():
     with shelve.open("chat_history") as db:
@@ -144,7 +154,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
 
-# Main chat interface
+# Main chat interface with feedback integration
 if prompt := st.chat_input("How can I help?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar=USER_AVATAR):
@@ -172,6 +182,12 @@ if prompt := st.chat_input("How can I help?"):
 
     # Append assistant's response to messages
     st.session_state.messages.append({"role": "assistant", "content": full_response})
-    
+
+    # Generate feedback and display it
+    feedback = provide_feedback(prompt)
+    st.session_state.messages.append({"role": "feedback", "content": feedback})
+    with st.chat_message("feedback"), avatar=FEEDBACK_AVATAR):
+        st.markdown(feedback)
+        
 # Save chat history after each interaction
 save_chat_history(st.session_state.messages)
