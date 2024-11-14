@@ -78,8 +78,12 @@ with st.sidebar:
         if st.session_state.messages not in saved_conversations:
             saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
             st.sidebar.success("Previous conversation has been saved.")
+            st.session_state.messages = [initial_message] # Resets chat
+            save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
         else:
             st.sidebar.info("No new updates; conversation saved and remains unchanged.")
+            st.session_state.messages = [initial_message] # Resets chat
+            save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
 
         # Update saved conversations list without duplicating identical conversations
         st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
@@ -88,12 +92,10 @@ with st.sidebar:
         # st.session_state.saved_conversations = saved_conversations
 
         # Clears messages for new conversation
-        st.session_state.messages = [initial_message] # Resets chat
-        save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
-
-        # Clear any selected conversation in dropdown
-        st.session_state["selected_conversation"] = "" # Resets dropdown selection
-
+        # st.session_state.messages = [initial_message] # Resets chat
+        # st.session_state["selected_conversation"] = "" # Resets dropdown selection
+        # save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
+        
         # st.sidebar.success("Conversation updated successfully!")
 
     # Add spacing between buttons
