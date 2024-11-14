@@ -85,9 +85,14 @@ with st.sidebar:
         st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
 
         # Reset conversation to initial message
-        st.session_state.saved_conversations = saved_conversations
+        # st.session_state.saved_conversations = saved_conversations
+
+        # Clears messages for new conversation
         st.session_state.messages = [initial_message] # Resets chat
-        save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+        save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
+
+        # Clear any selected conversation in dropdown
+        st.session_state["selected_conversation"] = "" # Resets dropdown selection
 
         # st.sidebar.success("Conversation updated successfully!")
 
