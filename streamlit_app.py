@@ -89,7 +89,7 @@ with st.sidebar:
         st.session_state.messages = [initial_message] # Resets chat
         save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
 
-        st.sidebar.success("Conversation updated successfully!")
+        # st.sidebar.success("Conversation updated successfully!")
 
     # Add spacing between buttons
     st.write("---")
