@@ -38,7 +38,7 @@ def provide_feedback(question):
     feedback_prompt = f"Evaluate the question: '{question}'. Provide a constructive feedback on phrasing and suggest improvements for clarity and relevance."
     feedback_response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role":, "system", "content": feedback_prompt}]
+        messages=[{"role": "system", "content": feedback_prompt}]
     )
     return feedback_response.choices[0].message['content']
     
