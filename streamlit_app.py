@@ -186,7 +186,7 @@ if prompt := st.chat_input("How can I help?"):
     # Generate feedback and display it
     feedback = provide_feedback(prompt)
     st.session_state.messages.append({"role": "feedback", "content": feedback})
-    with st.chat_message("feedback"), avatar=FEEDBACK_AVATAR):
+    with st.chat_message("feedback", avatar=FEEDBACK_AVATAR):
         st.markdown(feedback)
         
 # Save chat history after each interaction
