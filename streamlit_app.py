@@ -150,7 +150,7 @@ with st.sidebar:
         # Refresh app by clearing 'selected_conversation' after loading messages
         st.session_state["selected_conversation"] = "" # Resetting to acoid re-loading on next render
 
-        st.sidebar.success(f"Loaded Conversation{conversation_num}")
+        st.sidebar.success(f"Loaded Conversation {conversation_index}")
 
     # Add spacing before delete button
     st.write("---")
