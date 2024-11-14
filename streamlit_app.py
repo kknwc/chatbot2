@@ -190,7 +190,7 @@ if st.button("End Conversation and Get Feedback"):
     user_questions = " ".join(msg["content"] for msg in st.session_state.messages if msg["role"] == "user")
 
     # Generate feedback for entire conversation
-    feedback_prompt = f"Evaluate the following series of questions: '{user_questions}'. Provide feedback on the overall phrasing, clarity, relevance, and suggest improvements for effective information gathering."
+    feedback_prompt = f"Evaluate the following series of questions: '{user_questions}'. Provide brief feedback on the overall phrasing, clarity and relevance of the questions, and suggest a couple of quick improvements for better information gathering."
     feedback_response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "system", "content": feedback_prompt}]
