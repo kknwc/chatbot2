@@ -54,14 +54,30 @@ if "messages" not in st.session_state:
 if "saved_conversations" not in st.session_state:
     st.session_state.saved_conversations = []
 
+# Function to compare current conversation with saved conversations
+def update_saved_conversation(current_conversation, saved_conversations):
+    # Check if current conversation already exists in saved conversation (by comparing content)
+    for idx, saved_convo in enumerate(saved_conversations):
+        # Check if content matches (you can choose to ignore exact order or format here)
+        if saved_convo == current_conversation:
+            return saved_conversations # Return as is if no new updates
+
+    # If its new conversation or updated one, add it or update existing one
+    saved_conversations.insert(0, current_conversation) # Insert updated or new conversation at top
+    return saved_conversations
+
 # Sidebar layout
 with st.sidebar:
     # New conversation button at top: resets chat and loads initial message
     if st.button("New Conversation"):
         # Save current conversation automatically before starting new one
+        current_conversation = st.session_state.messages
         saved_conversations = st.session_state.get("saved_conversations", [])
-        saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
-        st.session_state.saved_conversations = saved_conversations
+        # saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
+        # st.session_state.saved_conversations = saved_conversations
+
+        # Update saved conversations list without duplicating identical conversations
+        st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
 
         # Display success message
         st.sidebar.success("Previous conversation has been saved.")
@@ -69,6 +85,8 @@ with st.sidebar:
         # Reset conversation to initial message
         st.session_state.messages = [initial_message] # Resets chat
         save_chat_history(st.session_state.messages) # Save empty conversation (or initial state)
+
+        st.sidebar.success("Conversation updated successfully!")
 
     # Add spacing between buttons
     st.write("---")
@@ -91,6 +109,7 @@ with st.sidebar:
             # Load selected saved conversation
             st.session_state.messages = conversation
             save_chat_history(conversation)
+            st.sidebar.success(f"Loaded Conversation{conversation_num")
 
     # Display dropdown to select conversation to display
     st.markdown("### Select Conversation")
