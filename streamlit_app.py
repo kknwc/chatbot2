@@ -75,14 +75,7 @@ with st.sidebar:
         saved_conversations = st.session_state.get("saved_conversations", [])
 
         # Check if current conversation has already been saved
-        if st.session_state.messages not in saved_conversations:
-            saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
-            st.sidebar.success("Previous conversation has been saved.")
-            st.session_state.messages = [initial_message] # Resets chat
-            st.sidebar.success("work 1")
-            save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
-            st.sidebar.success("work 2")
-        else:
+        if st.session_state.messages in saved_conversations:
             st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
             st.sidebar.success("work 3")
             st.sidebar.info("No new updates; conversation saved and remains unchanged.")
@@ -91,6 +84,13 @@ with st.sidebar:
             st.sidebar.success("work 5")
             save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
             st.sidebar.success("work 6")
+        else:
+            saved_conversations.insert(0, list(st.session_state.messages)) # Insert at beginning to maintain order
+            st.sidebar.success("Previous conversation has been saved.")
+            st.session_state.messages = [initial_message] # Resets chat
+            st.sidebar.success("work 1")
+            save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
+            st.sidebar.success("work 2")
 
         # Update saved conversations list without duplicating identical conversations
         # st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
