@@ -184,7 +184,7 @@ if prompt := st.chat_input("How can I help?"):
 save_chat_history(st.session_state.messages)
 
 # End conversation button on main page
-st.write("--")
+# st.write("--")
 if st.button("End Conversation and Get Feedback"):
     # Gather all user questions in conversation
     user_questions = " ".join(msg["content"] for msg in st.session_state.messages if msg["role"] == "user")
@@ -197,6 +197,10 @@ if st.button("End Conversation and Get Feedback"):
     )
     feedback = feedback_response.choices[0].message.content
 
+    # Save session feedback to session state so can be accessed after button click
+    st.session_state.feedback = feedback
+
     # Display feedback on main page
     st.markdown("### Feedback on conversation")
-    st.write(feedback)
+    with st.chat_message("assistant", avatar=FEEDBACK_AVATAR):
+        st.markdown(st.session_state.feedback) # Display feedback with avatar
