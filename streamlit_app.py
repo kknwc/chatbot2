@@ -109,7 +109,7 @@ with st.sidebar:
             # Load selected saved conversation
             st.session_state.messages = conversation
             save_chat_history(conversation)
-            st.sidebar.success(f"Loaded Conversation{conversation_num")
+            st.sidebar.success(f"Loaded Conversation{conversation_num}")
 
     # Display dropdown to select conversation to display
     st.markdown("### Select Conversation")
