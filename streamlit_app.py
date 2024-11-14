@@ -71,7 +71,7 @@ with st.sidebar:
     # New conversation button at top: resets chat and loads initial message
     if st.button("New Conversation"):
         # Save current conversation automatically before starting new one
-        # current_conversation = st.session_state.messages
+        current_conversation = st.session_state.messages
         saved_conversations = st.session_state.get("saved_conversations", [])
 
         # Check if current conversation has already been saved
