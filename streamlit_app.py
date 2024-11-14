@@ -40,7 +40,7 @@ def provide_feedback(question):
         model="gpt-4o-mini",
         messages=[{"role": "system", "content": feedback_prompt}]
     )
-    return feedback_response.choices[0].message['content']
+    return feedback_response.choices[0].message.content     
     
 # Load chat history from shelve file
 def load_chat_history():
