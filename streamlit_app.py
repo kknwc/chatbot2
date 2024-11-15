@@ -278,7 +278,7 @@ if authentication_status:
             with st.chat_message("feedback", avatar=FEEDBACK_AVATAR):
                 st.markdown(st.session_state.feedback) # Display feedback with avatar
 
-    elif username == "tutor:
+    elif username == "tutor":
         st.title("Tutor Configuration Interface")
         st.write("This is the interface for tutors to configure chatbot settings.")
         # Add the tutor configuration code here
