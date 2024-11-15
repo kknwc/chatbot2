@@ -285,7 +285,7 @@ if authentication_status:
         # Chatbot configuration logic for tutors here
 
     # Logout button
-    if st.sidebar.button("Logout")
+    if st.sidebar.button("Logout"):
         authenticator.logout("main")
         st.experimental_rerun()
 
