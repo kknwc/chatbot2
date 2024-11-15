@@ -1,5 +1,5 @@
 streamlit
 openai
 python-dotenv
-streamlit-authenticator
+streamlit-authenticator==0.4.1
 pyyaml
