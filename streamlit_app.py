@@ -19,7 +19,13 @@ roles = json.loads(st.secrets['ROLES'])
 print("Roles:", roles)
 
 # Set up authenticator with student and tutor roles
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords, roles=roles, cookie_expiry_days=30)
+authenticator = stauth.Authenticate(
+    names,
+    usernames,
+    hashed_passwords,
+    roles=roles,
+    cookie_expiry_days=30
+)
 
 # Login
 name, authentication_status, username = authenticator.login("Login", "main")
