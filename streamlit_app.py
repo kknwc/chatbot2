@@ -287,7 +287,8 @@ if authentication_status:
     # Logout button
     if st.sidebar.button("Logout"):
         authenticator.logout("main")
-        st.experimental_rerun()
+        st.session_state.clear()
+        st.sidebar.success("Logged out.")
 
 elif authentication_status == False:
     st.error("Username or password is incorrect")
