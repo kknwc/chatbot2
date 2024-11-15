@@ -11,14 +11,15 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 hashed_passwords = json.loads(st.secrets["HASHED_PASSWORDS"])
 print("Hashed Passwords:", hashed_passwords)
-
-# Define usernames, passwords, and roles
-names = ["Student User", "Tutor User"]
-usernames = ["student", "tutor"]
-roles = ["student", "tutor"]
+usernames = json.loads(st.secrets['USERNAMES'])
+print("Usernames:", usernames)
+names = json.loads(st.secrets['NAMES'])
+print("Names:", names)
+roles = json.loads(st.secrets['ROLES'])
+print("Roles:", roles)
 
 # Set up authenticator with student and tutor roles
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "cookie_name", "signature_key", cookie_expiry_days=1)
+authenticator = stauth.Authenticate(names, usernames, hashed_passwords, roles=roles, cookie_expiry_days=30)
 
 # Login
 name, authentication_status, username = authenticator.login("Login", "main")
