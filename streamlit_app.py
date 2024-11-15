@@ -14,7 +14,7 @@ usernames = ["aldricc", "hheng"]
 
 hashed_passwords = os.getenv("HASHED_PASSWORDS")
 
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords, cookie_name="auth_token", signature_key="random_signature_key", cookie_expiry_days=30)
+authenticator = stauth.Authenticate(names=names, usernames=usernames, hashed_passwords=hashed_passwords, cookie_name="auth_token", signature_key="random_signature_key", cookie_expiry_days=30)
 
 name, authentication_status, username = authenticator.login("Login", "main")
 
