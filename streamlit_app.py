@@ -9,13 +9,36 @@ load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-names = ["Aldric", "Mr Heng"]
-usernames = ["aldricc", "hheng"]
+credentials = {
+        "usernames": {
+                "aldricc": {
+                        "name": "Aldric",
+                        "password": "$2b$12$OucZZizy9c7Pbl3T0X5jUejiOoBOgj0lejEphO9BvghtENn1J2D5i"
+                },
+                "hheng": {
+                        "name": "Mr Heng",
+                        "password": "$2b$12$cZaj/ph97W9HIOI66DXrCuasN7oGDN54R32fP9yOyU6u4FCVi21aO"
+                }
+        }
+}
 
-hashed_passwords = os.getenv("HASHED_PASSWORDS")
+cookie_name = "auth_token"
+signature_key = "random_signature_key"
 
-authenticator = stauth.Authenticate(names=names, usernames=usernames, hashed_passwords=hashed_passwords, cookie_name="auth_token", signature_key="random_signature_key", cookie_expiry_days=30)
+# names = ["Aldric", "Mr Heng"]
+# usernames = ["aldricc", "hheng"]
 
+# hashed_passwords = os.getenv("HASHED_PASSWORDS")
+
+# authenticator = stauth.Authenticate(names=names, usernames=usernames, hashed_passwords=hashed_passwords, cookie_name="auth_token", signature_key="random_signature_key", cookie_expiry_days=30)
+
+authenticator = stauth.Authenticate(
+        credentials=credentials,
+        cookie_name=cookie_name,
+        signature_key=signature_key,
+        cookie_expiry_days=30
+)
+        
 name, authentication_status, username = authenticator.login("Login", "main")
 
 if authentication_status == False:
