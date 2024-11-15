@@ -9,13 +9,14 @@ import json
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-hashed_passwords = json.loads(st.secrets["HASHED_PASSWORDS"])
+# hashed_passwords = json.loads(st.secrets["HASHED_PASSWORDS"])
+hashed_passwords = os.getenv("HASHED_PASSWORDS")
 print("Hashed Passwords:", hashed_passwords)
-usernames = json.loads(st.secrets['USERNAMES'])
+usernames = os.getenv(USERNAMES')
 print("Usernames:", usernames)
-names = json.loads(st.secrets['NAMES'])
+names = os.getenv('NAMES')
 print("Names:", names)
-roles = json.loads(st.secrets['ROLES'])
+roles = os.getenv('ROLES')
 print("Roles:", roles)
 
 # Set up authenticator with student and tutor roles
