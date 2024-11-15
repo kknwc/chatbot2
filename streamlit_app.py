@@ -9,7 +9,8 @@ import json
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-hashed_passwords = json.loads(os.getenv("HASHED_PASSWORDS"))
+hashed_passwords = json.loads(st.secrets["HASHED_PASSWORDS"])
+print("Hashed Passwords:", hashed_passwords)
 
 # Define usernames, passwords, and roles
 names = ["Student User", "Tutor User"]
