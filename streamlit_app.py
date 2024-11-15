@@ -4,19 +4,17 @@ from openai import OpenAI # Make sure you have the OpenAI package installed
 import shelve
 from dotenv import load_dotenv
 import streamlit_authenticator as stauth
+import json
 
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+hashed_passwords = json.loads(os.getenv("HASHED_PASSWORDS"))
 
 # Define usernames, passwords, and roles
 names = ["Student User", "Tutor User"]
 usernames = ["student", "tutor"]
-passwords = ["studentpassword", "tutorpassword"]
 roles = ["student", "tutor"]
-
-# Hash passwords securely (use `stauth.Hasher(["passsword1", "password2"]).generate()` to create hash values)
-hashed_passwords = stauth.Hasher(passwords).generate()
 
 # Set up authenticator with student and tutor roles
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "cookie_name", "signature_key", cookie_expiry_days=1)
