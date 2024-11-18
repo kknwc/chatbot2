@@ -5,6 +5,7 @@ import json
 import bcrypt
 from openai import OpenAI
 import streamlit_authenticator as stauth
+from dotenv import load_dotenv
 
 if 'role' not in st.session_state:
     st.session_state.role = None # Default to None, or can use 'student' or 'tutor' as default
