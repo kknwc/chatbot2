@@ -78,6 +78,7 @@ def tutor_interface():
                         st.write(feedback_data["feedback"])
                         st.markdown("### Conversation:")
                         for msg in feedback_data["conversation"]:
+                            role = "User" if msg["role"] == "user" else "Chatbot"
                             st.write(f"**{msg['role']}**: {msg['content']}")
             else:
                 st.write("No feedback available.")
@@ -332,13 +333,23 @@ def student_interface():
             messages=[{"role": "system", "content": feedback_prompt}]
         )
         feedback = feedback_response.choices[0].message.content
+
+        # Save feedback to shared storage
+        with shelve.open("feedback_storage") as db:
+            student_id = st.session_state.get("student_id", "Unknown Student")
+            if student_id not in db:
+                db[student_id] = []
+            db[student_id].append({
+                "feedback": feedback,
+                "conversation": st.session_state.messages,
+            })
             
         # Save session feedback to session state so can be accessed after button click
-        st.session_state.feedback = feedback
+        # st.session_state.feedback = feedback
 
         # Save feedback to shared storage with a unique identifier for the student
-        student_id = "student_001" # Replace with a dynamic identifier if applicable
-        save_feedback(student_id, feedback, st.session_state.messages)
+        # student_id = "student_001" # Replace with a dynamic identifier if applicable
+        # save_feedback(student_id, feedback, st.session_state.messages)
             
         # Display feedback on main page
         st.markdown("### Feedback on conversation")
