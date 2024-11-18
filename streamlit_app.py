@@ -309,6 +309,15 @@ def student_interface():
                     
     # Save chat history after each interaction
     save_chat_history(st.session_state.messages)
+
+    def save_feedback(student_id, feedback, conversation):
+        with shelve.open("feedback_storage") as db:
+            if student_id not in db:
+                db[student_id] = [] # Initalize if no feedback exists for this student
+            db[student_id].append({
+                "feedback": feedback,
+                "conversation": conversation
+            })                
             
     # End conversation button on main page
     # st.write("--")
@@ -326,6 +335,10 @@ def student_interface():
             
         # Save session feedback to session state so can be accessed after button click
         st.session_state.feedback = feedback
+
+        # Save feedback to shared storage with a unique identifier for the student
+        student_id = "student_001" # Replace with a dynamic identifier if applicable
+        save_feedback(student_id, feedback, st.session_state.messages)
             
         # Display feedback on main page
         st.markdown("### Feedback on conversation")
