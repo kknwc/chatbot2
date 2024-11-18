@@ -1,0 +1,14 @@
+{
+    "users": [
+        {
+            "username": "aldric",
+            "password": "$2b$12$OucZZizy9c7Pbl3T0X5jUejiOoBOgj0lejEphO9BvghtENn1J2D5i",
+            "role": "student"
+        },
+        {
+            "username": "mr heng",
+            "password": "$2b$12$cZaj/ph97W9HIOI66DXrCuasN7oGDN54R32fP9yOyU6u4FCVi21aO",
+            "role": "tutor"
+        }
+    ]
+}
