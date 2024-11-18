@@ -345,7 +345,7 @@ def student_interface():
             })
             
         # Save session feedback to session state so can be accessed after button click
-        # st.session_state.feedback = feedback
+        st.session_state.feedback = feedback
 
         # Save feedback to shared storage with a unique identifier for the student
         # student_id = "student_001" # Replace with a dynamic identifier if applicable
