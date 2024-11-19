@@ -180,8 +180,8 @@ def student_interface():
             else:
                 # st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
                 st.sidebar.info("No new updates; conversation saved and remains unchanged.")
-                # st.session_state.messages = [initial_message] # Resets chat
-                # save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
+                st.session_state.messages = [initial_message] # Resets chat CHANGED
+                save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve CHANGED
             
             # Update saved conversations list without duplicating identical conversations
             st.session_state.saved_conversations = saved_conversations
@@ -270,9 +270,6 @@ def student_interface():
         if st.session_state.get("messages_reset", False):
             st.session_state["messages_reset"] = False
             
-            # Refresh the app by triggering the change
-            # st.write("") # This is a workaround for triggering an update
-            
     # Display chat messages
     for message in st.session_state.messages:
         avatar = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
@@ -321,7 +318,6 @@ def student_interface():
             })                
             
     # End conversation button on main page
-    # st.write("--")
     if st.button("End Conversation and Get Feedback"):
         # Gather all user questions in conversation
         user_questions = " ".join(msg["content"] for msg in st.session_state.messages if msg["role"] == "user")
