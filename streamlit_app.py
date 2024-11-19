@@ -178,9 +178,10 @@ def student_interface():
                 # st.session_state.messages = [initial_message] # Resets chat
                 # save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve
             else:
-                # st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
+                st.session_state.saved_conversations = update_saved_conversation(current_conversation, saved_conversations)
                 st.sidebar.info("No new updates; conversation saved and remains unchanged.")
                 st.session_state.messages = [initial_message] # Resets chat CHANGED
+                st.session_state["selected_conversation"] = "" # CHANGED
                 save_chat_history(st.session_state.messages) # Save empty conversation (or initial state) to shelve CHANGED
             
             # Update saved conversations list without duplicating identical conversations
